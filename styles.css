@@ -1,8 +1,89 @@
-/*
+.book-reader-view {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	gap: 0.75rem;
+	padding: 1rem;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
+.book-reader__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
 
-If your plugin does not need CSS, delete this file.
+.book-reader__title-group {
+	min-width: 16rem;
+}
 
-*/
+.book-reader__title {
+	margin: 0;
+	font-size: 1.1rem;
+}
+
+.book-reader__location {
+	margin-top: 0.25rem;
+	font-size: 0.9rem;
+	color: var(--text-muted);
+}
+
+.book-reader__controls {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	flex-wrap: wrap;
+}
+
+.book-reader__button,
+.book-reader__chapter-select {
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 0.6rem;
+	background: var(--background-secondary);
+}
+
+.book-reader__button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.5rem;
+	height: 2.5rem;
+	padding: 0;
+	cursor: pointer;
+}
+
+.book-reader__chapter-select {
+	min-width: min(28rem, 70vw);
+	max-width: 100%;
+	padding: 0.5rem 0.75rem;
+}
+
+.book-reader__viewer {
+	position: relative;
+	flex: 1;
+	min-height: 24rem;
+	overflow: hidden;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: 0.9rem;
+	background: linear-gradient(
+		180deg,
+		var(--background-primary),
+		var(--background-secondary)
+	);
+}
+
+.book-reader__viewer > div,
+.book-reader__viewer iframe {
+	width: 100%;
+	height: 100%;
+}
+
+.book-reader__empty {
+	display: grid;
+	place-items: center;
+	height: 100%;
+	padding: 2rem;
+	color: var(--text-muted);
+	text-align: center;
+}
