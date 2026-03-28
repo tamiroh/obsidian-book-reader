@@ -33,7 +33,6 @@ export class EpubReaderView extends ItemView {
 
 	private headerEl!: HTMLElement;
 	private titleEl!: HTMLElement;
-	private locationEl!: HTMLElement;
 	private chapterSelectEl!: HTMLSelectElement;
 	private viewerEl!: HTMLElement;
 	private emptyStateEl!: HTMLElement;
@@ -101,24 +100,15 @@ export class EpubReaderView extends ItemView {
 		const titleGroupEl = this.headerEl.createDiv({
 			cls: "book-reader__title-group",
 		});
-		this.titleEl = titleGroupEl.createEl("h2", {
+		const titleRowEl = titleGroupEl.createDiv({
+			cls: "book-reader__title-row",
+		});
+		this.titleEl = titleRowEl.createEl("h2", {
 			text: "Epub reader",
 			cls: "book-reader__title",
 		});
-		this.locationEl = titleGroupEl.createDiv({
-			text: "No book opened",
-			cls: "book-reader__location",
-		});
 
-		const controlsEl = this.headerEl.createDiv({
-			cls: "book-reader__controls",
-		});
-
-		this.createButton(controlsEl, "chevron-left", "Previous section", async () => {
-			await this.rendition?.prev();
-		});
-
-		this.chapterSelectEl = controlsEl.createEl("select", {
+		this.chapterSelectEl = titleRowEl.createEl("select", {
 			cls: "book-reader__chapter-select",
 		});
 		this.chapterSelectEl.addEventListener("change", () => {
@@ -128,6 +118,14 @@ export class EpubReaderView extends ItemView {
 			}
 
 			void this.rendition.display(href);
+		});
+
+		const controlsEl = this.headerEl.createDiv({
+			cls: "book-reader__controls",
+		});
+
+		this.createButton(controlsEl, "chevron-left", "Previous section", async () => {
+			await this.rendition?.prev();
 		});
 
 		this.createButton(controlsEl, "chevron-right", "Next section", async () => {
@@ -175,7 +173,6 @@ export class EpubReaderView extends ItemView {
 		this.file = file;
 		this.currentLocation = location;
 		this.titleEl.setText(file.basename);
-		this.locationEl.setText("Loading epub...");
 		this.viewerEl.empty();
 
 		try {
@@ -204,7 +201,6 @@ export class EpubReaderView extends ItemView {
 
 			await this.rendition.display(location ?? undefined);
 			this.titleEl.setText(book.packaging.metadata.title || file.basename);
-			this.locationEl.setText(file.path);
 		} catch (error) {
 			console.error(error);
 			this.renderEmptyState("Failed to open this EPUB file.");
@@ -217,7 +213,6 @@ export class EpubReaderView extends ItemView {
 
 		if (event.start?.href) {
 			this.chapterSelectEl.value = event.start.href;
-			this.locationEl.setText(event.start.href);
 		}
 
 		if (this.file && this.currentLocation) {
@@ -257,7 +252,6 @@ export class EpubReaderView extends ItemView {
 			text: message,
 			cls: "book-reader__empty",
 		});
-		this.locationEl.setText(message);
 	}
 
 	private async persistCurrentLocation(): Promise<void> {
